@@ -1,0 +1,238 @@
+/* Custom animations and additional styling */
+
+/* Theme transition */
+.theme-transition {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Ensure dark mode styles are applied to html element */
+html.dark {
+    background-color: #1f2937;
+    color: #f3f4f6;
+}
+
+html.dark body {
+    background-color: #1f2937;
+    color: #f3f4f6;
+}
+
+/* Task card animations */
+.task-card {
+    transform-origin: center;
+    transition: all 0.3s ease;
+}
+
+.task-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Task completion animation */
+.task-complete-animation {
+    animation: fadeComplete 0.5s ease forwards;
+}
+
+@keyframes fadeComplete {
+    0% {
+        opacity: 1;
+        background-color: inherit;
+    }
+    50% {
+        opacity: 0.7;
+        background-color: rgba(16, 185, 129, 0.1); /* Light green background */
+    }
+    100% {
+        opacity: 1;
+        background-color: rgba(16, 185, 129, 0.1); /* Light green background */
+    }
+}
+
+/* Strike-through animation for completed tasks */
+.task-title-complete {
+    position: relative;
+}
+
+.task-title-complete::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    animation: strikeThrough 0.3s ease-in-out forwards;
+}
+
+@keyframes strikeThrough {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+/* Progress circle animation */
+#progress-circle {
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+/* Add task animation */
+.task-add-animation {
+    animation: addTask 0.4s ease-out;
+}
+
+@keyframes addTask {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Delete task animation */
+.task-delete-animation {
+    animation: deleteTask 0.3s ease-out forwards;
+}
+
+@keyframes deleteTask {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+/* Swipe animations for mobile */
+.swipe-action {
+    transition: transform 0.3s ease;
+}
+
+/* Bounce effect for drag and drop */
+.sortable-ghost {
+    opacity: 0.5;
+}
+
+.sortable-chosen {
+    animation: bounce 0.5s infinite alternate;
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Category tag colors */
+.category-work {
+    background-color: rgba(59, 130, 246, 0.2); /* Blue */
+    color: rgb(37, 99, 235);
+}
+
+.category-personal {
+    background-color: rgba(139, 92, 246, 0.2); /* Purple */
+    color: rgb(124, 58, 237);
+}
+
+.category-urgent {
+    background-color: rgba(239, 68, 68, 0.2); /* Red */
+    color: rgb(220, 38, 38);
+}
+
+.category-shopping {
+    background-color: rgba(245, 158, 11, 0.2); /* Amber */
+    color: rgb(217, 119, 6);
+}
+
+.category-health {
+    background-color: rgba(16, 185, 129, 0.2); /* Green */
+    color: rgb(5, 150, 105);
+}
+
+/* Priority indicators */
+.priority-high {
+    border-left: 4px solid rgb(239, 68, 68); /* Red */
+}
+
+.priority-medium {
+    border-left: 4px solid rgb(245, 158, 11); /* Amber */
+}
+
+.priority-low {
+    border-left: 4px solid rgb(16, 185, 129); /* Green */
+}
+
+/* Date picker custom styling */
+input[type="datetime-local"] {
+    position: relative;
+    cursor: pointer;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    color: transparent;
+    cursor: pointer;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+/* Trophy animation */
+#trophy-section.show {
+    animation: showTrophy 0.6s ease-out;
+}
+
+@keyframes showTrophy {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(10px);
+    }
+    50% {
+        transform: scale(1.1) translateY(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Mobile swipe indicators */
+.swipe-indicator {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: width 0.2s ease;
+}
+
+.swipe-indicator-right {
+    left: 0;
+    background-color: rgba(16, 185, 129, 0.2); /* Green */
+}
+
+.swipe-indicator-left {
+    right: 0;
+    background-color: rgba(239, 68, 68, 0.2); /* Red */
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .task-card {
+        overflow: hidden;
+    }
+}

@@ -68,13 +68,15 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
 });
 
-// Prompt for user name
+// Set default user name instead of using prompt
 function promptForUserName() {
-    const name = prompt('Welcome to TaskMaster! What\'s your name?');
-    if (name && name.trim() !== '') {
-        userNameElement.textContent = name.trim();
-        localStorage.setItem('userName', name.trim());
-    }
+    // Using a default name instead of prompt which is blocked in some environments
+    const defaultName = "User";
+    userNameElement.textContent = defaultName;
+    localStorage.setItem('userName', defaultName);
+    
+    // In a real environment, you could use a modal dialog instead of prompt
+    console.log("Name prompt is disabled in this environment");
 }
 
 // Setup event listeners
@@ -155,27 +157,51 @@ function setupEventListeners() {
 
 // Initialize Sortable.js for drag and drop
 function initSortable() {
-    new Sortable(tasksContainer, {
-        animation: 150,
-        ghostClass: 'sortable-ghost',
-        chosenClass: 'sortable-chosen',
-        onEnd: function(evt) {
-            // Update tasks array order based on DOM order
-            const taskElements = Array.from(tasksContainer.querySelectorAll('.task-card'));
-            const newTasks = [];
-            
-            taskElements.forEach(element => {
-                const taskId = element.dataset.id;
-                const task = tasks.find(t => t.id === taskId);
-                if (task) {
-                    newTasks.push(task);
-                }
-            });
-            
-            tasks = newTasks;
-            saveTasks();
+    try {
+        // Check if Sortable library is available
+        if (typeof Sortable === 'undefined') {
+            console.warn("Sortable library not loaded. Drag and drop functionality will not be available.");
+            return;
         }
-    });
+        
+        // Check if tasks container exists
+        if (!tasksContainer) {
+            console.warn("Tasks container not found. Drag and drop functionality will not be available.");
+            return;
+        }
+        
+        // Initialize Sortable
+        new Sortable(tasksContainer, {
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            chosenClass: 'sortable-chosen',
+            onEnd: function(evt) {
+                try {
+                    // Update tasks array order based on DOM order
+                    const taskElements = Array.from(tasksContainer.querySelectorAll('.task-card'));
+                    const newTasks = [];
+                    
+                    taskElements.forEach(element => {
+                        const taskId = element.dataset.id;
+                        const task = tasks.find(t => t.id === taskId);
+                        if (task) {
+                            newTasks.push(task);
+                        }
+                    });
+                    
+                    tasks = newTasks;
+                    saveTasks();
+                } catch (error) {
+                    console.error("Error updating task order:", error);
+                }
+            }
+        });
+        
+        console.log("Sortable drag and drop initialized successfully");
+    } catch (error) {
+        console.error("Error initializing Sortable:", error);
+        // Fallback - disable drag and drop but ensure tasks still display
+    }
 }
 
 // Setup touch events for mobile swipe actions
@@ -325,28 +351,47 @@ function toggleTaskComplete(taskId) {
 function createNextRecurringTask(task) {
     if (!task.dueDate) return;
     
+    // Create a new Date object from the original due date string
     const dueDate = new Date(task.dueDate);
-    let nextDueDate = new Date(dueDate);
+    
+    // Create a new date object for the next occurrence
+    let nextDueDate;
     
     switch (task.recurring) {
         case 'daily':
+            // For daily tasks, create a new date with the same time but next day
+            nextDueDate = new Date(dueDate);
             nextDueDate.setDate(dueDate.getDate() + 1);
             break;
         case 'weekly':
+            // For weekly tasks, create a new date with the same time but 7 days later
+            nextDueDate = new Date(dueDate);
             nextDueDate.setDate(dueDate.getDate() + 7);
             break;
         case 'monthly':
+            // For monthly tasks, create a new date with the same time but next month
+            nextDueDate = new Date(dueDate);
             nextDueDate.setMonth(dueDate.getMonth() + 1);
             break;
         default:
             return;
     }
     
+    // Format the date string properly to preserve time
+    const year = nextDueDate.getFullYear();
+    const month = String(nextDueDate.getMonth() + 1).padStart(2, '0');
+    const day = String(nextDueDate.getDate()).padStart(2, '0');
+    const hours = String(dueDate.getHours()).padStart(2, '0');
+    const minutes = String(dueDate.getMinutes()).padStart(2, '0');
+    
+    // Create the ISO string format manually to ensure time is preserved
+    const nextDueDateString = `${year}-${month}-${day}T${hours}:${minutes}`;
+    
     const newTask = {
         ...task,
         id: Date.now().toString(),
         completed: false,
-        dueDate: nextDueDate.toISOString().slice(0, 16),
+        dueDate: nextDueDateString,
         createdAt: new Date().toISOString()
     };
     
@@ -752,21 +797,33 @@ function toggleTheme() {
 
 // Play sound effect
 function playSound(audioElement) {
-    if (audioElement) {
-        audioElement.currentTime = 0;
-        audioElement.play().catch(error => {
-            console.log('Audio playback error:', error);
-        });
+    if (audioElement && audioElement.src) {
+        try {
+            audioElement.currentTime = 0;
+            audioElement.play().catch(error => {
+                console.log('Audio playback error:', error);
+                // Silently fail - audio is non-critical functionality
+            });
+        } catch (error) {
+            console.log('Audio element error:', error);
+            // Silently fail - audio is non-critical functionality
+        }
     }
 }
 
 // Load tasks from localStorage
 function loadTasks() {
-    const savedTasks = localStorage.getItem('tasks');
-    if (savedTasks) {
-        tasks = JSON.parse(savedTasks);
-        renderTasks();
-    } else {
+    try {
+        const savedTasks = localStorage.getItem('tasks');
+        if (savedTasks) {
+            tasks = JSON.parse(savedTasks);
+            renderTasks();
+        } else {
+            tasks = [];
+            emptyState.classList.remove('hidden');
+        }
+    } catch (error) {
+        console.error('Error loading tasks from localStorage:', error);
         tasks = [];
         emptyState.classList.remove('hidden');
     }
@@ -774,7 +831,13 @@ function loadTasks() {
 
 // Save tasks to localStorage
 function saveTasks() {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    try {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    } catch (error) {
+        console.error('Error saving tasks to localStorage:', error);
+        // Notify user that their data might not be saved
+        alert('Unable to save your tasks. Local storage might be full or disabled.');
+    }
 }
 
 // Render all tasks

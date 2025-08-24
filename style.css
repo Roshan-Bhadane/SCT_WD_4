@@ -2,28 +2,105 @@
 
 /* Theme transition */
 .theme-transition {
-    transition: background-color 0.5s ease, color 0.5s ease;
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
-/* Ensure dark mode styles are applied to html element */
+/* Light mode styles */
+html {
+    background-color: #f8fafc;
+    color: #334155;
+}
+
+html body {
+    background-color: #f8fafc;
+    color: #334155;
+}
+
+/* Enhanced dark mode styles with dramatic contrast */
 html.dark {
-    background-color: #1f2937;
-    color: #f3f4f6;
+    background-color: #000000; /* Pure black background for maximum contrast */
+    color: #ffffff;
+    background-image: linear-gradient(to bottom right, #000000, #0f172a); /* Subtle gradient background */
 }
 
 html.dark body {
-    background-color: #1f2937;
-    color: #f3f4f6;
+    background-color: transparent;
+    color: #ffffff;
 }
 
-/* Task card animations */
+/* Dark mode card and container styles with dramatic effects */
+html.dark .bg-white {
+    background-color: #1a1a2e !important; /* Deep blue-black for cards */
+    border-color: #4a5568 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark .bg-gray-100 {
+    background-color: #16213e !important; /* Deep blue shade */
+}
+
+html.dark .bg-gray-800 {
+    background-color: #0d1117 !important; /* GitHub dark mode inspired */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5) !important;
+    border: 1px solid #30363d !important;
+}
+
+/* Vibrant accent colors for dark mode */
+html.dark .text-blue-500, 
+html.dark .text-blue-600 {
+    color: #38bdf8 !important; /* Bright sky blue for better visibility */
+}
+
+html.dark .bg-blue-500,
+html.dark .bg-blue-600 {
+    background-color: #0ea5e9 !important; /* Vibrant blue background */
+    box-shadow: 0 0 15px rgba(14, 165, 233, 0.4) !important; /* Glow effect */
+}
+
+/* Enhanced text colors for dark mode */
+html.dark .text-gray-800 {
+    color: #f8fafc !important; /* Very light gray, almost white */
+}
+
+html.dark .text-gray-700 {
+    color: #e2e8f0 !important; /* Light gray */
+}
+
+html.dark .text-gray-600 {
+    color: #cbd5e1 !important; /* Medium light gray */
+}
+
+/* Button enhancements for dark mode */
+html.dark button:not(.bg-red-500):not(.bg-yellow-500):not(.bg-green-500) {
+    background-image: linear-gradient(to right, #0ea5e9, #3b82f6) !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+html.dark button:hover:not(.bg-red-500):not(.bg-yellow-500):not(.bg-green-500) {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(14, 165, 233, 0.4) !important;
+}
+
+/* Task card animations and dark mode enhancements */
 .task-card {
     transform-origin: center;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease, background-color 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease;
 }
 
 .task-card:hover {
     transform: translateY(-2px);
+}
+
+/* Enhanced dark mode task cards */
+html.dark .task-card {
+    border-color: #374151 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+html.dark .task-card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* Task completion animation */
@@ -131,30 +208,56 @@ html.dark body {
     }
 }
 
-/* Category tag colors */
+/* Category tag colors - Light mode */
 .category-work {
     background-color: rgba(59, 130, 246, 0.2); /* Blue */
-    color: rgb(37, 99, 235);
+    color: rgb(30, 64, 175);
 }
 
 .category-personal {
     background-color: rgba(139, 92, 246, 0.2); /* Purple */
-    color: rgb(124, 58, 237);
+    color: rgb(109, 40, 217);
 }
 
 .category-urgent {
     background-color: rgba(239, 68, 68, 0.2); /* Red */
-    color: rgb(220, 38, 38);
+    color: rgb(185, 28, 28);
 }
 
 .category-shopping {
     background-color: rgba(245, 158, 11, 0.2); /* Amber */
-    color: rgb(217, 119, 6);
+    color: rgb(180, 83, 9);
 }
 
 .category-health {
     background-color: rgba(16, 185, 129, 0.2); /* Green */
-    color: rgb(5, 150, 105);
+    color: rgb(4, 120, 87);
+}
+
+/* Category tag colors - Dark mode */
+html.dark .category-work {
+    background-color: rgba(59, 130, 246, 0.3); /* Blue */
+    color: rgb(96, 165, 250);
+}
+
+html.dark .category-personal {
+    background-color: rgba(139, 92, 246, 0.3); /* Purple */
+    color: rgb(167, 139, 250);
+}
+
+html.dark .category-urgent {
+    background-color: rgba(239, 68, 68, 0.3); /* Red */
+    color: rgb(248, 113, 113);
+}
+
+html.dark .category-shopping {
+    background-color: rgba(245, 158, 11, 0.3); /* Amber */
+    color: rgb(251, 191, 36);
+}
+
+html.dark .category-health {
+    background-color: rgba(16, 185, 129, 0.3); /* Green */
+    color: rgb(52, 211, 153);
 }
 
 /* Priority indicators */

@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TaskMaster - Your To-Do App</title>
     <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script>
-        tailwind.config = {
+        // Fix tailwind configuration
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {}
@@ -42,24 +44,39 @@
             </div>
             
             <!-- Task Statistics -->
-            <div id="task-statistics" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 max-w-md mx-auto">
-                <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-2">Task Statistics</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="text-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Total Tasks</p>
-                        <p id="stats-total" class="text-xl font-bold text-gray-800 dark:text-white">0</p>
+            <div id="task-statistics" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-5 max-w-md mx-auto border-t-4 border-blue-500">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+                    <i class="fas fa-chart-pie mr-2 text-blue-500 dark:text-blue-400"></i>
+                    Task Statistics
+                </h3>
+                <div class="grid grid-cols-2 gap-5">
+                    <div class="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/40 dark:to-blue-800/30 rounded-lg shadow-sm border border-blue-200 dark:border-blue-700 transform transition-all duration-300 hover:scale-105">
+                        <div class="flex justify-center mb-1">
+                            <i class="fas fa-tasks text-blue-500 dark:text-blue-400 text-xl"></i>
+                        </div>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">Total Tasks</p>
+                        <p id="stats-total" class="text-2xl font-bold text-gray-900 dark:text-white">0</p>
                     </div>
-                    <div class="text-center p-2 bg-green-50 dark:bg-green-900/20 rounded">
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Completed</p>
-                        <p id="stats-completed" class="text-xl font-bold text-gray-800 dark:text-white">0</p>
+                    <div class="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/40 dark:to-green-800/30 rounded-lg shadow-sm border border-green-200 dark:border-green-700 transform transition-all duration-300 hover:scale-105">
+                        <div class="flex justify-center mb-1">
+                            <i class="fas fa-check-circle text-green-500 dark:text-green-400 text-xl"></i>
+                        </div>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">Completed</p>
+                        <p id="stats-completed" class="text-2xl font-bold text-gray-900 dark:text-white">0</p>
                     </div>
-                    <div class="text-center p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded">
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Due Today</p>
-                        <p id="stats-today" class="text-xl font-bold text-gray-800 dark:text-white">0</p>
+                    <div class="text-center p-4 bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/40 dark:to-yellow-800/30 rounded-lg shadow-sm border border-yellow-200 dark:border-yellow-700 transform transition-all duration-300 hover:scale-105">
+                        <div class="flex justify-center mb-1">
+                            <i class="fas fa-calendar-day text-yellow-500 dark:text-yellow-300 text-xl"></i>
+                        </div>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">Due Today</p>
+                        <p id="stats-today" class="text-2xl font-bold text-gray-900 dark:text-white">0</p>
                     </div>
-                    <div class="text-center p-2 bg-purple-50 dark:bg-purple-900/20 rounded">
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Recurring</p>
-                        <p id="stats-recurring" class="text-xl font-bold text-gray-800 dark:text-white">0</p>
+                    <div class="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/40 dark:to-purple-800/30 rounded-lg shadow-sm border border-purple-200 dark:border-purple-700 transform transition-all duration-300 hover:scale-105">
+                        <div class="flex justify-center mb-1">
+                            <i class="fas fa-sync-alt text-purple-500 dark:text-purple-400 text-xl"></i>
+                        </div>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">Recurring</p>
+                        <p id="stats-recurring" class="text-2xl font-bold text-gray-900 dark:text-white">0</p>
                     </div>
                 </div>
             </div>
@@ -69,7 +86,7 @@
         <div id="trophy-section" class="mb-8 text-center hidden">
             <div class="inline-block p-4 bg-yellow-100 dark:bg-yellow-900 rounded-lg shadow-md">
                 <i class="fas fa-trophy text-4xl text-yellow-500 mb-2"></i>
-                <p class="text-gray-800 dark:text-gray-200 font-bold">All tasks completed for today!</p>
+                <p class="text-gray-900 dark:text-gray-200 font-bold">All tasks completed for today!</p>
             </div>
         </div>
 
@@ -221,10 +238,10 @@
         </div>
     </div>
 
-    <!-- Audio elements for sound effects -->
-    <audio id="add-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3" preload="auto"></audio>
-    <audio id="delete-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-fast-small-sweep-transition-166.mp3" preload="auto"></audio>
-    <audio id="complete-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-positive-interface-beep-221.mp3" preload="auto"></audio>
+    <!-- Audio elements for sound effects - using local placeholders -->
+    <audio id="add-sound" preload="auto"></audio>
+    <audio id="delete-sound" preload="auto"></audio>
+    <audio id="complete-sound" preload="auto"></audio>
 
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
